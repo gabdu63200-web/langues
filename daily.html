@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Révision journalière - FlashMaster</title>
+
+<style>
+:root{--primary:#5B5CEB;--primary-light:#7B7CF8;--primary-dark:#4344C7;--secondary:#8B5CF6;--accent:#00C2FF;--success:#22C55E;--warning:#F59E0B;--danger:#EF4444;--background:#F5F7FB;--surface:#FFFFFF;--surface-alt:#F1F5F9;--border:#E5E7EB;--text:#111827;--text-light:#6B7280;--white:#FFFFFF;--gradient-primary:linear-gradient(135deg,#5B5CEB,#7C3AED);--gradient-blue:linear-gradient(135deg,#00C6FF,#0072FF);--gradient-green:linear-gradient(135deg,#22C55E,#16A34A);--gradient-red:linear-gradient(135deg,#F87171,#EF4444);--gradient-background:linear-gradient(145deg,#EEF2FF,#F8FAFC);--font:"Poppins",sans-serif;--fs-xs:.75rem;--fs-sm:.9rem;--fs-md:1rem;--fs-lg:1.2rem;--fs-xl:1.6rem;--fs-2xl:2rem;--fs-3xl:2.5rem;--light:300;--normal:400;--medium:500;--semibold:600;--bold:700;--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-7:32px;--space-8:40px;--space-9:56px;--radius-sm:8px;--radius:12px;--radius-lg:20px;--radius-xl:28px;--radius-round:999px;--shadow-xs:0 2px 4px rgba(0,0,0,.05);--shadow-sm:0 4px 10px rgba(0,0,0,.08);--shadow:0 10px 25px rgba(0,0,0,.12);--shadow-lg:0 20px 45px rgba(0,0,0,.18);--shadow-card:0 18px 45px rgba(91,92,235,.15);--fast:.2s;--normal-speed:.35s;--slow:.6s;--sidebar-width:300px;--topbar-height:80px;--card-width:650px;--card-height:400px;--button-height:52px;--button-radius:14px;--z-sidebar:20;--z-modal:100;--z-toast:999;}body.dark{--background:#111827;--surface:#1E293B;--surface-alt:#263548;--border:#334155;--text:#F8FAFC;--text-light:#CBD5E1;--shadow-card:0 18px 45px rgba(0,0,0,.45);--gradient-background:linear-gradient(145deg,#111827,#1F2937);}*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}body{font-family:var(--font);background:var(--gradient-background);color:var(--text);transition:background var(--slow),color var(--normal-speed);min-height:100vh;}::-webkit-scrollbar{width:10px;}::-webkit-scrollbar-thumb{background:var(--primary);border-radius:999px;}::-webkit-scrollbar-track{background:transparent;}::selection{background:var(--primary);color:white;}a{text-decoration:none;color:inherit;}ul{list-style:none;}button{font-family:inherit;}input,textarea{font-family:inherit;font-size:1rem;}
+</style>
+
+<style>
+body{margin:0;font-family:"Poppins",sans-serif;background:#f4f6fb;color:#1f2937;overflow-y:auto;overflow-x:hidden;}#studyView{display:flex;flex-direction:column;min-height:100vh;padding:24px;gap:20px;} .back-home-btn{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;border:none;padding:12px 18px;border-radius:999px;background:linear-gradient(135deg,#5B5CEB,#7C3AED);color:white;font-weight:600;font-size:15px;cursor:pointer;box-shadow:0 8px 22px rgba(91,92,235,.25);transition:.25s;} .back-home-btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(91,92,235,.32);} .daily-progress{width:min(560px,100%);background:white;border-radius:14px;padding:14px 16px;box-shadow:0 5px 15px rgba(0,0,0,.08);} .daily-progress-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;} .daily-progress-label,.daily-progress-summary{font-weight:600;font-size:14px;white-space:nowrap;} .daily-progress-label{color:#16a34a;} .daily-progress-summary{display:flex;align-items:center;gap:4px;} .daily-progress-bar{flex:1;min-width:0;height:12px;background:#e5e7eb;border-radius:999px;overflow:hidden;} .daily-progress-fill{width:0%;height:100%;background:linear-gradient(90deg,#22c55e,#16a34a);border-radius:999px;transition:width .4s ease;} .flashcard{width:min(760px,100%);height:480px;perspective:1800px;cursor:pointer;position:relative;align-self:center;} .card-inner{position:relative;width:100%;height:100%;transition:transform .8s;transform-style:preserve-3d;} .flashcard.flipped .card-inner{transform:rotateY(180deg);} .card-front,.card-back{position:absolute;width:100%;height:100%;border-radius:28px;backface-visibility:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px;box-sizing:border-box;} .card-front{background:linear-gradient(135deg,#5B5CEB,#7C3AED);color:white;box-shadow:0 25px 60px rgba(91,92,235,.30);} .card-back{background:white;color:#222;transform:rotateY(180deg);box-shadow:0 25px 60px rgba(0,0,0,.12);} .card-label{font-size:14px;letter-spacing:3px;opacity:.7;margin-bottom:25px;} #question,#answer{font-size:42px;font-weight:700;line-height:1.4;} .card-extra{margin:6px 30px 0;font-size:16px;color:#444;opacity:.85;white-space:pre-wrap;max-height:70px;overflow-y:auto;} .daily-rate-buttons{display:flex;justify-content:center;gap:12px;margin-top:30px;flex-wrap:wrap;} .daily-rate-btn{border:none;padding:14px 26px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:.25s;letter-spacing:1px;} .daily-rate-btn:hover{transform:translateY(-3px);box-shadow:0 10px 20px rgba(0,0,0,.15);} .rate-yes{background:#22c55e;color:white;} .rate-medium{background:#f59e0b;color:white;} .rate-no{background:#ef4444;color:white;} .navigation{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-top:10px;max-width:760px;width:100%;align-self:center;} .navigation button{border:none;background:white;padding:15px 22px;border-radius:15px;cursor:pointer;font-size:15px;font-weight:600;transition:.25s;box-shadow:0 5px 15px rgba(0,0,0,.08);} .navigation button:hover{transform:translateY(-3px);} body.dark{background:#0f172a;color:white;} body.dark .daily-progress{background:#1e293b;} body.dark .card-back{background:#1e293b;color:white;} body.dark .navigation button{background:#334155;color:white;} @media(max-width:700px){.flashcard{height:520px;}.navigation{flex-direction:column;}.navigation button{width:100%;}}
+</style>
+
+</head>
+
+<body class="dark daily-mode">
+
+<div id="studyView">
+
+    <button id="backHomeBtn" class="back-home-btn">
+        ← Retour
+    </button>
+
+    <div class="daily-progress" id="dailyProgressWrap">
+
+        <div class="daily-progress-row">
+
+            <div class="daily-progress-bar">
+
+                <div class="daily-progress-fill" id="dailyProgressFill"></div>
+
+            </div>
+
+            <div class="daily-progress-summary">
+
+                <span class="daily-progress-label">✅ Mots réussis :</span>
+
+                <span class="daily-progress-num" id="dailyProgressSuccess">0</span>
+
+                <span>/</span>
+
+                <span id="dailyProgressTotal">0</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="flashcard" class="flashcard" style="cursor: pointer;">
+
+        <div class="card-inner">
+
+            <div class="card-front">
+
+                <span class="card-label">QUESTION</span>
+
+                <h2 id="question">Aucune question</h2>
+
+                <small>Touchez pour retourner</small>
+
+            </div>
+
+            <div class="card-back">
+
+                <span class="card-label">RÉPONSE</span>
+
+                <h2 id="answer">...</h2>
+
+<p id="cardExplanation" class="card-extra"></p>
+
+                <p id="cardExample" class="card-extra"></p>
+
+                <p id="cardExampleTranslation" class="card-extra"></p>
+
+                <div class="daily-rate-buttons">
+
+                    <button id="rateNoBtn" class="daily-rate-btn rate-no">
+                        NON
+                    </button>
+
+                    <button id="rateMediumBtn" class="daily-rate-btn rate-medium">
+                        MOYEN
+                    </button>
+
+                    <button id="rateYesBtn" class="daily-rate-btn rate-yes">
+                        OUI
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const flashcard = document.getElementById("flashcard");
+            if (flashcard) {
+                flashcard.addEventListener("click", () => {
+                    flashcard.classList.toggle("flipped");
+                });
+            }
+        });
+    </script>
+
+    <section class="navigation">
+
+        <button id="previousBtn">
+            ⬅ Précédente
+        </button>
+
+        <div class="counter">
+
+            <span id="currentCard">0</span>
+
+            /
+
+            <span id="totalCards">0</span>
+
+        </div>
+
+    </section>
+
+</div>
+
+<script>
+document.getElementById("studyView").style.display = "flex";
+</script>
+
+<script>
+const STORAGE_KEY = 'flashmaster-data-v2';
+function safeParse(value) { try { return value ? JSON.parse(value) : null; } catch { return null; } }
+const Storage = { getData() { return safeParse(localStorage.getItem(STORAGE_KEY)); }, saveData(data) { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }, clearData() { localStorage.removeItem(STORAGE_KEY); }, getFolders() { const data = this.getData(); return data ? data.folders || [] : []; }, getCards() { const data = this.getData(); return data ? data.cards || [] : []; } };
+</script>
+<script>
+function showToast(message){ const el=document.getElementById('toast'); if(!el)return; el.textContent=message; el.classList.add('show'); clearTimeout(showToast.timer); showToast.timer=setTimeout(()=>el.classList.remove('show'),1800);} 
+</script>
+<script>
+function createCard(question,answer){ const data=Storage.getData()||{folders:[],cards:[]}; data.cards.push({id:Date.now().toString(),question,answer,createdAt:Date.now()}); Storage.saveData(data); }
+</script>
+<script>
+if (typeof Storage !== 'undefined' && !Storage.getFolders) {
+    Storage.getFolders = function() { const data = this.getData(); return data ? data.folders : []; };
+}
+</script>
+<script>
+function initDaily(){ const flashcard=document.getElementById('flashcard'); if(flashcard){ flashcard.addEventListener('click', ()=>flashcard.classList.toggle('flipped')); } }
+document.addEventListener('DOMContentLoaded', initDaily);
+</script>
+
+</body>
+</html>
