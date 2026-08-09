@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color"
+          content="#5B5CEB">
+
+    <meta name="description"
+          content="FlashMaster — Apprends plus vite avec des flashcards.">
+
+    <!-- PWA / mobile -->
+
+    <meta name="mobile-web-app-capable"
+          content="yes">
+
+    <meta name="apple-mobile-web-app-capable"
+          content="yes">
+
+    <meta name="apple-mobile-web-app-status-bar-style"
+          content="default">
+
+    <meta name="apple-mobile-web-app-title"
+          content="FlashMaster">
+
+    <link rel="manifest"
+          href="manifest.json">
+
+    <link rel="icon"
+          type="image/png"
+          sizes="192x192"
+          href="icons/icon-192.png">
+
+    <link rel="apple-touch-icon"
+          href="icons/icon-192.png">
+
+    <!-- Police -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- CSS -->
+
+<style>
+/* ==========================================
+   FLASHMASTER - VARIABLES
+   ========================================== */
+
+:root{
+    --primary:#5B5CEB;
+    --primary-light:#7B7CF8;
+    --primary-dark:#4344C7;
+    --secondary:#8B5CF6;
+    --accent:#00C2FF;
+    --success:#22C55E;
+    --warning:#F59E0B;
+    --danger:#EF4444;
+    --background:#F5F7FB;
+    --surface:#FFFFFF;
+    --surface-alt:#F1F5F9;
+    --border:#E5E7EB;
+    --text:#111827;
+    --text-light:#6B7280;
+    --white:#FFFFFF;
+    --gradient-primary:linear-gradient(135deg,#5B5CEB,#7C3AED);
+    --gradient-blue:linear-gradient(135deg,#00C6FF,#0072FF);
+    --gradient-green:linear-gradient(135deg,#22C55E,#16A34A);
+    --gradient-red:linear-gradient(135deg,#F87171,#EF4444);
+    --gradient-background:linear-gradient(145deg,#EEF2FF,#F8FAFC);
+    --font:"Poppins",sans-serif;
+    --fs-xs:.75rem;
+    --fs-sm:.9rem;
+    --fs-md:1rem;
+    --fs-lg:1.2rem;
+    --fs-xl:1.6rem;
+    --fs-2xl:2rem;
+    --fs-3xl:2.5rem;
+    --light:300;
+    --normal:400;
+    --medium:500;
+    --semibold:600;
+    --bold:700;
+    --space-1:4px;
+    --space-2:8px;
+    --space-3:12px;
+    --space-4:16px;
+    --space-5:20px;
+    --space-6:24px;
+    --space-7:32px;
+    --space-8:40px;
+    --space-9:56px;
+    --radius-sm:8px;
+    --radius:12px;
+    --radius-lg:20px;
+    --radius-xl:28px;
+    --radius-round:999px;
+    --shadow-xs:0 2px 4px rgba(0,0,0,.05);
+    --shadow-sm:0 4px 10px rgba(0,0,0,.08);
+    --shadow:0 10px 25px rgba(0,0,0,.12);
+    --shadow-lg:0 20px 45px rgba(0,0,0,.18);
+    --shadow-card:0 18px 45px rgba(91,92,235,.15);
+    --fast:.2s;
+    --normal-speed:.35s;
+    --slow:.6s;
+    --sidebar-width:300px;
+    --topbar-height:80px;
+    --card-width:650px;
+    --card-height:400px;
+    --button-height:52px;
+    --button-radius:14px;
+    --z-sidebar:20;
+    --z-modal:100;
+    --z-toast:999;
+}
+body.dark{--background:#111827;--surface:#1E293B;--surface-alt:#263548;--border:#334155;--text:#F8FAFC;--text-light:#CBD5E1;--shadow-card:0 18px 45px rgba(0,0,0,.45);--gradient-background:linear-gradient(145deg,#111827,#1F2937);}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font);background:var(--gradient-background);color:var(--text);transition:background var(--slow),color var(--normal-speed);min-height:100vh;}
+::-webkit-scrollbar{width:10px;}::-webkit-scrollbar-thumb{background:var(--primary);border-radius:999px;}::-webkit-scrollbar-track{background:transparent;}::selection{background:var(--primary);color:white;}a{text-decoration:none;color:inherit;}ul{list-style:none;}button{font-family:inherit;}input,textarea{font-family:inherit;font-size:1rem;}
+</style>
+
+<style>
+/* ==========================================================
+   FLASHMASTER V2
+   STYLE.CSS
+==========================================================*/
+body{margin:0;font-family:"Poppins",sans-serif;background:#f4f6fb;color:#1f2937;overflow-y:auto;overflow-x:hidden;}
+#app{display:flex;flex-direction:column;width:100%;min-height:100vh;}
+.sidebar{width:100%;background:white;display:flex;flex-direction:column;padding:25px;box-shadow:0 10px 40px rgba(0,0,0,.08);z-index:5;}
+.logo{display:flex;align-items:center;gap:15px;margin-bottom:30px;}
+.logo-icon{width:60px;height:60px;border-radius:18px;background:linear-gradient(135deg,#5B5CEB,#7C3AED);display:flex;justify-content:center;align-items:center;color:white;font-size:30px;}
+.logo h2{margin:0;color:#5B5CEB;}
+.logo p{margin:0;color:#6b7280;font-size:14px;}
+.primary-btn{border:none;background:#5B5CEB;color:white;padding:15px;border-radius:15px;font-size:16px;cursor:pointer;transition:.25s;margin-bottom:25px;}
+.primary-btn:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(91,92,235,.25);}
+#folderList{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;overflow:auto;}
+.folder-nav{position:relative;}
+#folderPopup{position:absolute;top:0;left:0;right:0;background:transparent;display:none;z-index:20;}
+#folderPopup.show{display:block;}
+#folderDropdownList{display:none;}
+.folder-dropdown-items{display:none;flex-direction:column;gap:6px;margin-top:10px;padding-top:8px;}
+.folder-item.folder-open .folder-dropdown-items{display:flex;border-top:1px solid rgba(255,255,255,.25);}
+.folder-dropdown-list{display:flex;flex-direction:column;gap:6px;}
+.folder-dropdown-item{border:1px solid #e5e7eb;background:#f9fafb;color:#111827;text-align:left;padding:10px 12px;cursor:pointer;border-radius:10px;}
+.folder-dropdown-item:hover{background:#f3f4f6;}
+.folder-item.active .folder-dropdown-item{background:#fff;color:#111827;}
+#folderList li{background:#f5f7fb;border-radius:12px;padding:10px 12px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;align-items:stretch;gap:8px;width:100%;box-sizing:border-box;}
+.folder-dropdown-shell{position:relative;display:flex;flex-direction:column;gap:0;}
+.folder-dropdown-trigger{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px;border-radius:14px;background:linear-gradient(135deg,#eef2ff,#f8fafc);color:#4338ca;font-weight:700;cursor:pointer;position:relative;z-index:2;transition:border-radius .3s ease,box-shadow .3s ease,background .3s ease;box-shadow:0 2px 8px rgba(91,92,235,.12);}
+.folder-dropdown-shell.open .folder-dropdown-trigger{border-radius:14px 14px 0 0;box-shadow:0 4px 16px rgba(91,92,235,.20);}
+.folder-dropdown-trigger:hover{background:linear-gradient(135deg,#e5ebff,#f3f4ff);}
+.folder-dropdown-trigger span:last-child{font-size:0.9rem;opacity:.8;}
+.folder-dropdown-menu{max-height:0;opacity:0;overflow:hidden;display:flex;flex-direction:column;gap:4px;padding:0 8px;transition:max-height .4s ease,opacity .3s ease,padding .3s ease;border-radius:0 0 14px 14px;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 8px 25px rgba(91,92,235,.12);border:1px solid rgba(229,231,235,.8);border-top:none;position:relative;z-index:1;}
+.folder-dropdown-shell.open .folder-dropdown-menu{max-height:400px;opacity:1;padding:8px 8px;}
+.folder-dropdown-item{background:transparent;border:none;border-radius:10px;padding:10px 12px 10px 28px;cursor:pointer;display:flex;flex-direction:column;gap:2px;transition:background .2s ease,transform .2s ease;position:relative;}
+.folder-dropdown-item::before{content:"";position:absolute;left:10px;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:#d1d5db;transition:background .2s ease,transform .2s ease;}
+.folder-dropdown-item:hover{background:#f3f4f6;transform:translateX(4px);}
+.folder-dropdown-item:hover::before{background:#5B5CEB;transform:translateY(-50%) scale(1.3);}
+.folder-dropdown-item.active{background:#5B5CEB;color:white;}
+.folder-dropdown-item.active::before{background:white;transform:translateY(-50%) scale(1.2);}
+.folder-dropdown-item small{opacity:.75;font-size:.85rem;}
+.folder-dropdown-item.active small{opacity:.9;}
+body.dark .folder-dropdown-trigger{background:linear-gradient(135deg,#1e293b,#263548);color:#a5b4fc;box-shadow:0 2px 8px rgba(0,0,0,.25);}
+body.dark .folder-dropdown-trigger:hover{background:linear-gradient(135deg,#263548,#2d3f52);}
+body.dark .folder-dropdown-menu{background:rgba(30,41,59,.95);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-color:rgba(51,65,85,.8);box-shadow:0 8px 25px rgba(0,0,0,.3);}
+body.dark .folder-dropdown-item{color:#e2e8f0;}
+body.dark .folder-dropdown-item small{color:#94a3b8;}
+body.dark .folder-dropdown-item:hover{background:#334155;}
+body.dark .folder-dropdown-item::before{background:#475569;}
+body.dark .folder-dropdown-item:hover::before{background:#a5b4fc;}
+body.dark .folder-dropdown-item.active{background:#5B5CEB;color:white;}
+body.dark .folder-dropdown-item.active::before{background:white;}
+.folder-header{display:flex;align-items:center;gap:8px;flex:1;min-width:0;}
+.folder-name{font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.folder-toggle-btn{border:none;background:transparent;color:#5B5CEB;cursor:pointer;font-size:14px;padding:2px;display:flex;align-items:center;justify-content:center;}
+#folderList li.folder-item-hidden{display:none;}
+.folder-toggle-btn{border:2px solid #5B5CEB;background:#5B5CEB;color:white;cursor:pointer;font-size:16px;font-weight:700;width:30px;height:30px;border-radius:999px;display:flex;align-items:center;justify-content:center;padding:0;margin-right:6px;box-shadow:0 3px 8px rgba(91,92,235,.35);transition:.2s;}
+.folder-toggle-btn:hover{background:#ecefff;color:#5B5CEB;transform:scale(1.1);}
+#folderList li:hover{background:#ecefff;}
+#folderList li.active{background:#5B5CEB;color:white;}
+#folderList li.active .folder-toggle-btn{color:white;}
+.daily-progress{width:min(560px,100%);background:white;border-radius:14px;padding:14px 16px;box-shadow:0 5px 15px rgba(0,0,0,.08);}
+.daily-progress-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;}
+.daily-progress-label,.daily-progress-summary{font-weight:600;font-size:14px;white-space:nowrap;}
+.daily-progress-label{color:#16a34a;}
+.daily-progress-summary{display:flex;align-items:center;gap:4px;}
+.daily-progress-bar{flex:1;min-width:0;height:12px;background:#e5e7eb;border-radius:999px;overflow:hidden;}
+.daily-progress-fill{width:0%;height:100%;background:linear-gradient(90deg,#22c55e,#16a34a);border-radius:999px;transition:width .4s ease;}
+body.dark .daily-progress{background:#1e293b;}body.dark .daily-progress-bar{background:#334155;}
+body.daily-mode .flashcard{height:540px;}
+body.daily-mode .card-back .daily-rate-buttons{margin-top:auto;padding-top:22px;padding-bottom:8px;}
+.card-back .daily-rate-buttons{margin-top:auto;padding-top:20px;}
+.daily-rate-buttons{display:flex;justify-content:center;gap:12px;margin-top:30px;flex-wrap:wrap;}
+.daily-rate-btn{border:none;padding:14px 26px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:.25s;letter-spacing:1px;}
+.daily-rate-btn:hover{transform:translateY(-3px);box-shadow:0 10px 20px rgba(0,0,0,.15);}
+.rate-yes{background:#22c55e;color:white;}
+.rate-medium{background:#f59e0b;color:white;}
+.rate-no{background:#ef4444;color:white;}
+.daily-review-btn{border:none;background:linear-gradient(135deg,rgba(34,197,94,.55),rgba(22,163,74,.55));color:white;padding:15px;border-radius:15px;font-size:14px;font-weight:600;cursor:pointer;transition:.25s;width:100%;box-sizing:border-box;backdrop-filter:blur(4px);box-shadow:0 8px 22px rgba(34,197,94,.25);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:left;gap:12px;height:170px;position:relative;margin-bottom:25px;align-self:center;}
+.daily-reset-btn{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.85);color:#16a34a;font-size:18px;font-weight:700;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;box-shadow:0 3px 8px rgba(0,0,0,.15);line-height:1;}
+.daily-reset-btn:hover{transform:rotate(180deg) scale(1.1);}
+.daily-review-btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(34,197,94,.35);}
+.daily-review-title{font-size:14px;font-weight:600;}
+.daily-review-stats{display:flex;gap:10px;width:100%;}
+.daily-review-stat{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(255,255,255,.18);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.4);border-radius:10px;padding:10px;}
+.daily-review-num{font-size:22px;font-weight:700;}
+.daily-review-label{font-size:12px;font-weight:500;opacity:.9;}
+.daily-review-progress-row{display:flex;align-items:center;gap:10px;width:100%;}
+.daily-review-progress{flex:1;height:10px;background:rgba(255,255,255,.25);border-radius:999px;overflow:hidden;}
+.daily-review-progress-fill{width:0%;height:100%;background:linear-gradient(90deg,#fff,#e5ffef);border-radius:999px;transition:.4s;}
+.daily-review-progress-text{font-size:11px;font-weight:600;white-space:nowrap;}
+.main{flex:1;display:flex;flex-direction:column;padding:30px;overflow:hidden;width:100%;box-sizing:border-box;}
+.topbar{display:flex;justify-content:space-between;align-items:center;width:100%;box-sizing:border-box;}
+.topbar h1{margin:0;font-size:34px;}
+.topbar p{color:#6b7280;margin-top:5px;}
+.top-actions{display:flex;gap:10px;width:100%;flex-wrap:nowrap;}
+.top-actions button{flex:1 1 0;width:auto;height:36px;border:none;border-radius:10px;background:white;cursor:pointer;box-shadow:0 5px 15px rgba(0,0,0,.08);transition:.25s;min-width:0;max-width:none;}
+.top-actions button:hover{transform:translateY(-3px);}
+.sidebar-actions{display:flex;gap:10px;margin-bottom:25px;}
+.sidebar-actions button{flex:1;width:auto;height:50px;border:none;border-radius:14px;background:white;cursor:pointer;box-shadow:0 5px 15px rgba(0,0,0,.08);transition:.25s;font-size:20px;}
+.sidebar-actions button:hover{transform:translateY(-3px);} 
+.progress-section{margin-top:25px;background:white;padding:20px;border-radius:18px;box-shadow:0 5px 15px rgba(0,0,0,.08);height:200px;}
+.progress-header{display:flex;justify-content:space-between;margin-bottom:10px;}
+.progress-bar{width:100%;height:14px;background:#e5e7eb;border-radius:999px;overflow:hidden;}
+.progress-fill{width:0%;height:100%;background:linear-gradient(90deg,#5B5CEB,#7C3AED);transition:.4s;}
+.study-area{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;}
+.flashcard{width:750px;max-width:95%;height:430px;perspective:1800px;cursor:pointer;position:relative;}
+.card-inner{position:relative;width:100%;height:100%;transition:transform .8s;transform-style:preserve-3d;}
+.flashcard.flipped .card-inner{transform:rotateY(180deg);}
+.card-front,.card-back{position:absolute;width:100%;height:100%;border-radius:28px;backface-visibility:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px;box-sizing:border-box;}
+.card-front{background:linear-gradient(135deg,#5B5CEB,#7C3AED);color:white;box-shadow:0 25px 60px rgba(91,92,235,.30);}
+.card-back{background:white;color:#222;transform:rotateY(180deg);box-shadow:0 25px 60px rgba(0,0,0,.12);}
+.card-label{font-size:14px;letter-spacing:3px;opacity:.7;margin-bottom:25px;}
+#question,#answer{font-size:42px;font-weight:700;line-height:1.4;}
+.card-extra{margin:6px 30px 0;font-size:16px;color:#444;opacity:.85;white-space:pre-wrap;max-height:70px;overflow-y:auto;}
+body.dark .card-extra{color:#cbd5e1;}
+.card-extra-translation{font-style:italic;color:#5B5CEB;}
+body.dark .card-extra-translation{color:#a5b4fc;}
+.card-front small{margin-top:35px;opacity:.8;}
+.counter{margin-top:25px;font-size:18px;font-weight:600;}
+.card-counter{position:absolute;top:20px;right:20px;background:rgba(255,255,255,.85);color:#111827;padding:8px 12px;border-radius:999px;font-size:14px;font-weight:700;box-shadow:0 10px 25px rgba(0,0,0,.12);}
+body.dark .card-counter{background:rgba(15,23,42,.88);color:#f8fafc;}
+.review-buttons{display:flex;justify-content:center;gap:18px;margin-top:35px;flex-wrap:wrap;}
+.btn{border:none;padding:18px 28px;border-radius:16px;color:white;font-size:16px;font-weight:600;cursor:pointer;transition:.25s;min-width:180px;}
+.btn:hover{transform:translateY(-4px);}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:260px;padding:32px;border:1px dashed var(--border);border-radius:24px;background:rgba(255,255,255,.75);text-align:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.5);} 
+.empty-state h3{margin:0;color:var(--text);font-size:1.2rem;} 
+.empty-state p{margin:0;color:var(--text-light);line-height:1.6;} 
+.empty-state .primary-btn{margin-bottom:0;} 
+.card-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;} 
+.card-item{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:20px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:14px;transition:transform .2s ease,box-shadow .2s ease;} 
+.card-item:hover{transform:translateY(-3px);box-shadow:var(--shadow);} 
+.card-item-main{display:flex;flex-direction:column;gap:8px;} 
+.card-item-main strong{font-size:1.05rem;color:var(--text);} 
+.card-item-main p{margin:0;color:var(--text-light);line-height:1.5;} 
+.card-item-actions{display:flex;flex-wrap:wrap;gap:10px;} 
+.card-item-actions button{border:none;padding:10px 12px;border-radius:12px;background:var(--surface-alt);color:var(--text);font-weight:600;cursor:pointer;transition:.2s;} 
+.card-item-actions button:hover{transform:translateY(-2px);} 
+.card-item-actions button[data-action="study"]{background:var(--gradient-primary);color:white;} 
+.card-item-actions button[data-action="delete"]{background:rgba(239,68,68,.12);color:var(--danger);}
+/* ===========================
+   SÉLECTION MULTIPLE CARTES
+=========================== */
+.cards-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 18px;box-shadow:var(--shadow-sm);grid-column:1 / -1;}
+body.dark .cards-toolbar{background:#334155;}
+.select-btn{border:none;background:linear-gradient(135deg,#5B5CEB,#7C3AED);color:white;padding:12px 20px;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;transition:.25s;}
+.select-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(91,92,235,.3);}
+.cards-toolbar-left{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.cards-count{color:var(--text);font-weight:600;font-size:14px;}
+body.dark .cards-count{color:#d1d5db;}
+.select-all-label{display:flex;align-items:center;gap:8px;font-weight:600;color:var(--text);cursor:pointer;}
+body.dark .select-all-label{color:white;}
+.select-all-label input{width:18px;height:18px;accent-color:#5B5CEB;cursor:pointer;}
+.select-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.select-actions button{border:none;padding:10px 16px;border-radius:10px;font-weight:600;font-size:14px;cursor:pointer;transition:.2s;}
+.select-delete-btn{background:#ffeaea;color:#ef4444;}
+.select-delete-btn:hover{background:#ffdada;}
+.select-cancel-btn{background:#e5e7eb;color:#374151;}
+body.dark .select-cancel-btn{background:#475569;color:white;}
+.card-checkbox{position:absolute;top:12px;left:12px;z-index:2;}
+.card-checkbox input{width:20px;height:20px;accent-color:#5B5CEB;cursor:pointer;}
+.card-item:has(.card-checkbox) .card-item-main{padding-left:34px;}
+.card-item.card-selected{outline:3px solid #5B5CEB;background:#ecefff;}
+body.dark .card-item.card-selected{background:#4f46e5;}
+.danger{background:#ef4444;}
+.warning{background:#f59e0b;}
+.success{background:#22c55e;}
+.study-preview-empty{width:100%;display:flex;flex-direction:column;align-items:center;gap:16px;padding:20px 0;}
+.study-preview-empty-title{margin:0;color:#6b7280;font-weight:600;}
+.study-preview-shell{width:min(760px,100%);background:white;border-radius:24px;padding:24px;box-shadow:0 12px 35px rgba(15,23,42,.08);display:flex;flex-direction:column;gap:18px;}
+.study-preview-header{display:flex;justify-content:space-between;align-items:center;}
+.study-preview-back{border:none;background:linear-gradient(135deg,#5B5CEB,#7C3AED);color:white;padding:10px 14px;border-radius:999px;font-weight:600;font-size:14px;}
+.study-preview-pill{background:#f3f4f6;color:#5B5CEB;padding:8px 12px;border-radius:999px;font-size:13px;font-weight:700;}
+.study-preview-card{background:linear-gradient(135deg,#f8f8ff,#eef2ff);border:1px solid #e5e7eb;border-radius:22px;padding:28px;min-height:220px;display:flex;align-items:center;justify-content:center;text-align:center;}
+.study-preview-front{display:flex;flex-direction:column;gap:10px;}
+.study-preview-label{color:#5B5CEB;font-size:12px;letter-spacing:.2em;font-weight:700;}
+.study-preview-front h3{margin:0;font-size:24px;color:#1f2937;}
+.study-preview-front small{color:#6b7280;}
+.study-preview-nav{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+.study-preview-nav button{border:none;background:#f9fafb;color:#374151;padding:10px 14px;border-radius:12px;font-weight:600;cursor:pointer;}
+.navigation{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-top:25px;}
+body.daily-mode .navigation{width:100%;max-width:700px;}
+.navigation button{border:none;background:white;padding:15px 22px;border-radius:15px;cursor:pointer;font-size:15px;font-weight:600;transition:.25s;box-shadow:0 5px 15px rgba(0,0,0,.08);}
+.navigation button:hover{transform:translateY(-3px);}
+.back-home-btn{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;border:none;padding:12px 18px;border-radius:999px;background:linear-gradient(135deg,#5B5CEB,#7C3AED);color:white;font-weight:600;font-size:15px;cursor:pointer;box-shadow:0 8px 22px rgba(91,92,235,.25);transition:.25s;}
+.back-home-btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(91,92,235,.32);} .back-home-btn:active{transform:translateY(0);}#floatingAdd{position:fixed;right:30px;bottom:30px;width:70px;height:70px;border:none;border-radius:50%;background:linear-gradient(135deg,#5B5CEB,#7C3AED);color:white;font-size:34px;cursor:pointer;box-shadow:0 20px 45px rgba(91,92,235,.35);transition:.3s;}#floatingAdd:hover{transform:rotate(90deg) scale(1.08);} .flashcard:hover{transform:translateY(-5px);} @keyframes floating{0%{transform:translateY(0px);}50%{transform:translateY(-8px);}100%{transform:translateY(0px);}}.flashcard{animation:floating 5s ease-in-out infinite;}
+.modal{position:fixed;inset:0;display:none;justify-content:center;align-items:center;background:rgba(0,0,0,.45);backdrop-filter:blur(6px);z-index:1000;}
+.modal.show{display:flex;}
+.modal-content{background:white;width:520px;max-width:92%;border-radius:24px;padding:30px;animation:popup .35s ease;box-shadow:0 25px 70px rgba(0,0,0,.20);}
+.modal-content.large{width:700px;}
+.modal-content h2{margin-top:0;margin-bottom:20px;}
+.modal-content input,.modal-content textarea{width:100%;box-sizing:border-box;padding:16px;margin-bottom:18px;border-radius:14px;border:2px solid #e5e7eb;font-size:16px;font-family:inherit;}
+.modal-content textarea{min-height:180px;resize:vertical;}
+.modal-content input:focus,.modal-content textarea:focus{outline:none;border-color:#5B5CEB;}
+.modal-buttons{display:flex;justify-content:flex-end;gap:12px;}
+.modal-buttons button{padding:14px 22px;border:none;border-radius:14px;cursor:pointer;font-weight:600;}
+.modal-buttons button:first-child{background:#e5e7eb;}
+.modal-buttons button:last-child{background:#5B5CEB;color:white;}
+#toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%) translateY(120px);background:#5B5CEB;color:white;padding:16px 30px;border-radius:999px;opacity:0;transition:.4s;font-weight:600;z-index:1500;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+body.dark{background:#0f172a;color:white;}
+body.dark .sidebar{background:#1e293b;}
+body.dark .top-actions button,body.dark .navigation button{background:#334155;color:white;}
+body.dark .progress-section{background:#1e293b;}
+.sidebar .top-actions{margin-bottom:16px;justify-content:flex-start;}
+.sidebar .primary-btn{margin-bottom:16px;align-self:flex-start;}
+.sidebar .folder-nav{display:flex;flex-direction:column;gap:12px;}
+.sidebar #folderList{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;}
+.sidebar #folderList li{min-height:76px;}
+.sidebar .folder-meta{opacity:.8;font-size:.9rem;}
+.folder-section{display:flex;flex-direction:row;align-items:center;gap:12px;width:100%;box-sizing:border-box;flex-wrap:nowrap;}
+.folder-section .primary-btn{flex-shrink:0;margin-bottom:0;align-self:stretch;}
+.folder-section .folder-nav{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;justify-content:center;}
+.folder-section #folderList{display:flex;flex-direction:column;gap:8px;max-height:200px;overflow:auto;}
+.folder-buttons-col{display:flex;flex-direction:column;gap:8px;flex-shrink:0;}
+.folder-buttons-row{display:flex;gap:8px;}
+.folder-action-btn{border:none;background:#eef2ff;color:#4338ca;padding:10px 14px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;transition:.25s;flex:1;white-space:nowrap;}
+.folder-action-btn:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(91,92,235,.2);}
+.folder-action-btn.folder-delete-btn{background:#ffeaea;color:#ef4444;}
+.folder-action-btn.folder-delete-btn:hover{box-shadow:0 6px 14px rgba(239,68,68,.2);}
+body.dark .folder-action-btn{background:#334155;color:#a5b4fc;}
+body.dark .folder-action-btn.folder-delete-btn{background:#3f1d1d;color:#fca5a5;}
+@media(max-width:1000px){.sidebar{width:100%;}.flashcard{width:95%;}}
+body.dark .card-back{background:#1e293b;color:white;}
+body.dark .modal-content{background:#1e293b;color:white;}
+body.dark input,body.dark textarea{background:#334155;color:white;border-color:#475569;}
+body.dark #folderList li{background:#334155;color:white;}
+body.dark #folderList li.active{background:#5B5CEB;}
+@keyframes popup{from{opacity:0;transform:translateY(25px) scale(.95);}to{opacity:1;transform:translateY(0) scale(1);}}
+@keyframes fade{from{opacity:0;}to{opacity:1;}}
+@media(max-width:1000px){.sidebar{width:240px;}.flashcard{width:95%;}}
+@media(max-width:800px){#app{flex-direction:column;height:auto;} .sidebar{width:100%;border-radius:0;} .main{width:100%;padding:20px;box-sizing:border-box;} .topbar{display:flex;width:100%;justify-content:space-between;align-items:flex-start;flex-direction:column;gap:15px;box-sizing:border-box;} .sidebar-actions{flex-wrap:wrap;justify-content:space-between;} .top-actions{flex-wrap:nowrap;justify-content:space-between;} .sidebar-actions button{flex:1 1 calc(50% - 10px);min-width:120px;max-width:180px;aspect-ratio:1 / 1;} .top-actions button{flex:1 1 0;width:auto;min-width:0;max-width:none;aspect-ratio:1 / 1;}
+}
+</style>
+
+</head>
+
+<body class="dark">
+
+<div id="app">
+
+    <!-- ===================================================== -->
+    <!-- SIDEBAR -->
+    <!-- ===================================================== -->
+
+<aside class="sidebar">
+
+        <div class="top-actions sidebar-actions">
+
+            <button id="importCardsBtn" title="Importer des cartes">
+
+                📥
+
+            </button>
+
+            <button id="exportBackupBtn" title="Exporter une sauvegarde">
+
+                💾
+
+            </button>
+
+<button id="themeBtn" title="Mode clair">
+
+                ☀️
+
+            </button>
+
+            <button id="statsBtn" title="Statistiques">
+
+                📊
+
+            </button>
+
+        </div>
+
+<div class="folder-section">
+
+            <div class="folder-buttons-col">
+
+                <button
+                        id="newFolderBtn"
+                        class="primary-btn">
+
+                    + Nouveau dossier
+
+                </button>
+
+                <div class="folder-buttons-row">
+
+                    <button id="folderCardsBtn" class="folder-action-btn" title="Voir les cartes">
+
+                        🃏 Cartes
+
+                    </button>
+
+                    <button id="folderDeleteBtn" class="folder-action-btn folder-delete-btn" title="Supprimer le dossier">
+
+                        🗑️ Supprimer
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <nav class="folder-nav">
+
+                <ul id="folderList">
+
+                    <!-- Généré en JavaScript -->
+
+                </ul>
+
+                <div id="folderDropdownList"></div>
+
+            </nav>
+
+        </div>
+
+</aside>
+
+    <main class="main">
+
+        <!-- HEADER -->
+
+        <header class="topbar">
+
+</header>
+
+
+<!-- ZONE FLASHCARD -->
+
+<button id="dailyReviewBtn" class="daily-review-btn">
+
+            <span id="dailyResetBtn" class="daily-reset-btn" role="button" title="Réinitialiser la révision journalière">↺</span>
+
+            <span class="daily-review-title">📅 Révision journalière</span>
+
+            <div class="daily-review-stats">
+
+                <div class="daily-review-stat">
+
+                    <span class="daily-review-num" id="newCardsCount">0</span>
+
+                    <span class="daily-review-label">nouveaux</span>
+
+                </div>
+
+<div class="daily-review-stat">
+
+                    <span class="daily-review-num" id="reviewCardsCount">0</span>
+
+                    <span class="daily-review-label">révision</span>
+
+                </div>
+
+            </div>
+
+            <div class="daily-review-progress-row">
+
+                <div class="daily-review-progress">
+
+                    <div class="daily-review-progress-fill" id="dailyProgressFill"></div>
+
+                </div>
+
+                <span class="daily-review-progress-text" id="dailyProgressText">0 / 10 mots du jour</span>
+
+            </div>
+
+        </button>
+
+<section class="study-area">
+
+            <div class="view-tabs">
+
+</div>
+
+<div id="cardsView" class="cards-view">
+
+</div>
+ 
+
+<!-- ===================================================== -->
+<!-- BOUTON FLOTTANT -->
+<!-- ===================================================== -->
+
+<button id="floatingAdd">
+
+    +
+
+</button>
+
+<!-- ===================================================== -->
+<!-- POPUP DOSSIERS -->
+<!-- ===================================================== -->
+
+<div id="folderPopup" class="modal"></div>
+
+<!-- ===================================================== -->
+<!-- MODALE DOSSIER -->
+<!-- ===================================================== -->
+
+<div
+        id="folderModal"
+        class="modal">
+
+    <div class="modal-content">
+
+        <h2>
+
+            Nouveau dossier
+
+        </h2>
+
+        <input
+                id="folderName"
+                type="text"
+                placeholder="Nom du dossier">
+
+        <div class="modal-buttons">
+
+            <button
+                    id="cancelFolder">
+
+                Annuler
+
+            </button>
+
+            <button
+                    id="saveFolder">
+
+                Créer
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- MODALE CARTE -->
+<!-- ===================================================== -->
+
+<div
+        id="cardModal"
+        class="modal">
+
+    <div class="modal-content large">
+
+        <h2>
+
+            Nouvelle Flashcard
+
+        </h2>
+
+<input
+                id="cardQuestion"
+                type="text"
+                placeholder="Question">
+
+        <textarea
+                id="cardAnswer"
+                placeholder="Réponse"></textarea>
+
+        <input
+                id="cardExplanation"
+                type="text"
+                placeholder="Explication (optionnel)">
+
+<textarea
+                id="cardExample"
+                placeholder="Phrase d'exemple (optionnel)"></textarea>
+
+        <input
+                id="cardExampleTranslation"
+                type="text"
+                placeholder="Traduction de l'exemple (optionnel)">
+
+        <div class="modal-buttons">
+
+            <button
+                    id="cancelCard">
+
+                Annuler
+
+            </button>
+
+            <button
+                    id="saveCard">
+
+                Enregistrer
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- MODALE MODIFICATION CARTE -->
+<!-- ===================================================== -->
+
+<div id="editCardModal" class="modal">
+
+    <div class="modal-content large">
+
+        <h2>Modifier la flashcard</h2>
+
+<input id="editQuestion" type="text" placeholder="Question">
+
+        <textarea id="editAnswer" placeholder="Réponse"></textarea>
+
+        <input id="editExplanation" type="text" placeholder="Explication (optionnel)">
+
+<textarea id="editExample" placeholder="Phrase d'exemple (optionnel)"></textarea>
+
+        <input id="editExampleTranslation" type="text" placeholder="Traduction de l'exemple (optionnel)">
+
+        <div class="modal-buttons">
+
+            <button id="cancelEditCard">Annuler</button>
+
+            <button id="saveEditCard">Enregistrer</button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- TOAST -->
+<!-- ===================================================== -->
+<!-- ===================================================== -->
+<!-- MODALE STATISTIQUES -->
+<!-- ===================================================== -->
+<!-- ========================================= -->
+<!-- IMPORT DE CARTES -->
+<!-- ========================================= -->
+
+<div id="importCardsModal" class="modal">
+
+    <div class="modal-content">
+
+        <h2>📥 Importer des flashcards</h2>
+
+        <p>
+
+            Formats acceptés :
+            <strong>CSV • TXT • JSON</strong>
+
+        </p>
+
+        <button id="chooseImportFile">
+
+            Choisir un fichier
+
+        </button>
+
+        <input
+            type="file"
+            id="importCardsFile"
+            accept=".csv,.txt,.json"
+            hidden
+        >
+
+        <div id="importPreview"
+             class="import-preview">
+
+            Aucun fichier sélectionné.
+
+        </div>
+
+        <div class="modal-buttons">
+
+            <button id="cancelImportCards">
+
+                Annuler
+
+            </button>
+
+            <button id="confirmImportCards">
+
+                Importer
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="statsModal" class="modal">
+
+    <div class="modal-content">
+
+        <h2>📊 Statistiques</h2>
+
+        <div class="stats-list">
+
+            <div class="stat-item">
+
+                <span>📚 Dossiers</span>
+
+                <strong id="statsFolders">0</strong>
+
+            </div>
+
+            <div class="stat-item">
+
+                <span>🃏</span>
+
+                <strong id="statsCards">0</strong>
+
+            </div>
+
+            <div class="stat-item">
+
+                <span>✅ Cartes maîtrisées</span>
+
+                <strong id="statsLearned">0</strong>
+
+            </div>
+
+            <div class="stat-item">
+
+                <span>⭐ Favoris</span>
+
+                <strong id="statsFavorites">0</strong>
+
+            </div>
+
+            <div class="stat-item">
+
+                <span>🗑️ Corbeille</span>
+
+                <strong id="statsTrash">0</strong>
+
+            </div>
+
+        </div>
+
+        <div class="modal-buttons">
+
+            <button id="closeStats">
+
+                Fermer
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="toast">
+
+    Sauvegardé !
+
+</div>
+
+<!-- ===================================================== -->
+<!-- JAVASCRIPT -->
+<!-- ===================================================== -->
+
+<script>
+(() => {
+    const STORAGE_KEY = 'flashmaster-data-v2';
+    const LAST_FOLDER_KEY = 'flashmaster_last_folder';
+    const REVIEW_FOLDER_KEY = 'flashmaster_review_folder';
+const STUDY_FOLDER_KEY = 'flashmaster_study_folder';
+    const STUDY_CARD_KEY = 'flashmaster_study_card';
+let state = null;
+    let currentFolderId = null;
+    let editingCardId = null;
+    let selectionMode = false;
+    let selectedCards = new Set();
+
+    function createDefaultState() {
+        return {
+            settings: { darkMode: true },
+            folders: [{
+                id: 'folder-default',
+                name: 'Anglais',
+                cards: [
+                    { id: 'card-1', question: 'Hello', answer: 'Bonjour', explanation: '', example: '', exampleTranslation: '' },
+                    { id: 'card-2', question: 'Apple', answer: 'Pomme', explanation: '', example: '', exampleTranslation: '' }
+                ]
+            }],
+            statistics: { reviewed: 0, learned: 0 }
+        };
+    }
+
+    function loadState() {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+            try {
+                const parsed = JSON.parse(raw);
+                if (parsed && Array.isArray(parsed.folders)) {
+                    return parsed;
+                }
+            } catch (e) {}
+        }
+        return createDefaultState();
+    }
+
+    function saveState() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function ensureState() {
+        if (!state) {
+            state = loadState();
+            if (!state.settings) state.settings = { darkMode: true };
+            if (!state.statistics) state.statistics = { reviewed: 0, learned: 0 };
+            if (!state.folders || !state.folders.length) {
+                state = createDefaultState();
+            }
+        }
+        return state;
+    }
+
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
+        toast.textContent = message;
+        toast.classList.add('show');
+        clearTimeout(showToast.timer);
+        showToast.timer = setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    function getCurrentFolder() {
+        ensureState();
+        if (!currentFolderId) {
+            const saved = localStorage.getItem(LAST_FOLDER_KEY);
+            currentFolderId = state.folders.find(folder => folder.id === saved)?.id || state.folders[0]?.id || null;
+        }
+        return state.folders.find(folder => folder.id === currentFolderId) || null;
+    }
+
+    function todayKey() {
+        const d = new Date();
+        d.setHours(0, 0, 0, 0);
+        return d.getFullYear() + "-" +
+            String(d.getMonth() + 1).padStart(2, "0") + "-" +
+            String(d.getDate()).padStart(2, "0");
+    }
+
+    function parseDateKey(key) {
+        const parts = String(key).split("-").map(Number);
+        return new Date(parts[0], parts[1] - 1, parts[2]);
+    }
+
+    function updateDailyReviewWidget() {
+        ensureState();
+        const folder = getCurrentFolder();
+        const newCountEl = document.getElementById("newCardsCount");
+        const reviewCountEl = document.getElementById("reviewCardsCount");
+        const progressFill = document.getElementById("dailyProgressFill");
+        const progressText = document.getElementById("dailyProgressText");
+
+        if (!newCountEl || !reviewCountEl || !progressFill || !progressText) return;
+
+        if (!folder) {
+            newCountEl.textContent = "0";
+            reviewCountEl.textContent = "0";
+            progressFill.style.width = "0%";
+            progressText.textContent = "0 / 10 mots du jour";
+            return;
+        }
+
+        const today = todayKey();
+        const reviewCards = folder.cards.filter(
+            c => c.reviewDueDate && c.reviewDueDate <= today && c.status !== "trash"
+        );
+
+        const batchSize = 10;
+        const START_KEY = "flashmaster_daily_start";
+        let start = localStorage.getItem(START_KEY);
+        if (!start) {
+            start = today;
+            localStorage.setItem(START_KEY, start);
+        }
+
+        const startDate = parseDateKey(start);
+        const todayDate = new Date();
+        todayDate.setHours(0, 0, 0, 0);
+        const daysSinceStart = Math.floor((todayDate - startDate) / 86400000);
+
+        const newCandidates = folder.cards.filter(
+            c => !c.reviewDueDate && c.status !== "trash"
+        );
+
+        const totalBatches = Math.max(1, Math.ceil(newCandidates.length / batchSize));
+        const batchIndex = daysSinceStart % totalBatches;
+        const offset = batchIndex * batchSize;
+        const newBatch = newCandidates.slice(offset, offset + batchSize);
+
+        const newNonReview = newBatch.filter(
+            c => c.status !== "trash"
+        );
+
+        const visibleReview = reviewCards.length;
+        const visibleNew = newNonReview.length;
+
+        newCountEl.textContent = String(visibleNew);
+        reviewCountEl.textContent = String(visibleReview);
+
+        const total = Math.min(folder.cards.length, 10);
+        const lastDay = localStorage.getItem('flashmaster_daily_day');
+        const success = lastDay === today ? parseInt(localStorage.getItem('flashmaster_daily_success')) || 0 : 0;
+        const percent = total > 0 ? Math.round((success / total) * 100) : 0;
+
+        progressFill.style.width = `${percent}%`;
+        progressText.textContent = `${success} / ${total} mots du jour`;
+
+        if (total > 0 && success >= total) {
+            progressFill.style.width = "100%";
+            progressText.textContent = `✅ ${success} / ${total} mots du jour`;
+        }
+    }
+
+    function setCurrentFolder(id) {
+        currentFolderId = id;
+        localStorage.setItem(LAST_FOLDER_KEY, id);
+    }
+
+    function applyTheme() {
+        ensureState();
+        const isDark = state.settings.darkMode !== false;
+        document.body.classList.toggle('dark', isDark);
+        const themeBtn = document.getElementById('themeBtn');
+        if (themeBtn) {
+            themeBtn.textContent = isDark ? '☀️' : '🌙';
+            themeBtn.title = isDark ? 'Mode clair' : 'Mode sombre';
+        }
+    }
+
+    function renderFolders() {
+        ensureState();
+        const list = document.getElementById('folderList');
+        if (!list) return;
+        list.innerHTML = '';
+
+        const currentFolder = getCurrentFolder();
+        const shell = document.createElement('div');
+        shell.className = 'folder-dropdown-shell';
+        const trigger = document.createElement('div');
+        trigger.className = 'folder-dropdown-trigger';
+        trigger.innerHTML = `<strong>${currentFolder ? currentFolder.name : 'Sélectionner un dossier'}</strong><span>${state.folders.length} dossier${state.folders.length > 1 ? 's' : ''}</span>`;
+        trigger.addEventListener('click', () => {
+            shell.classList.toggle('open');
+        });
+        shell.appendChild(trigger);
+
+        const menu = document.createElement('div');
+        menu.className = 'folder-dropdown-menu';
+        state.folders
+            .filter(folder => folder.id !== currentFolder?.id)
+            .forEach(folder => {
+                const item = document.createElement('div');
+                item.className = 'folder-dropdown-item';
+                item.innerHTML = `<strong>${folder.name}</strong><small>${folder.cards.length} carte${folder.cards.length > 1 ? 's' : ''}</small>`;
+                item.addEventListener('click', () => {
+                    setCurrentFolder(folder.id);
+                    renderFolders();
+                    renderCards();
+                });
+                menu.appendChild(item);
+            });
+        shell.appendChild(menu);
+        list.appendChild(shell);
+    }
+
+    function renderCards() {
+        ensureState();
+        const container = document.getElementById('cardsView');
+        if (!container) return;
+        const folder = getCurrentFolder();
+        if (!folder) {
+            container.innerHTML = '<div class="empty-state"><h3>Aucun dossier</h3><p>Crée un dossier pour commencer.</p></div>';
+            updateDailyReviewWidget();
+            return;
+        }
+        if (!folder.cards.length) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <h3>Pas encore de cartes</h3>
+                    <p>Ajoute la première flashcard dans “${folder.name}”.</p>
+                    <button id="emptyAddBtn" class="primary-btn">Ajouter une carte</button>
+                </div>
+            `;
+            const addBtn = document.getElementById('emptyAddBtn');
+            if (addBtn) addBtn.addEventListener('click', () => openCardModal());
+            updateDailyReviewWidget();
+            return;
+        }
+container.innerHTML = '<div class="card-list"></div>';
+        const list = container.querySelector('.card-list');
+
+        /* ----- Barre d'outils de sélection ----- */
+        const toolbar = document.createElement('div');
+        toolbar.className = 'cards-toolbar';
+
+        if (!selectionMode) {
+            toolbar.innerHTML = `
+                <div class="cards-toolbar-left">
+                    <button class="select-btn" id="selectCardsBtn">☑️ Sélectionner</button>
+                    <span class="cards-count">${folder.cards.length} ${folder.cards.length === 1 ? 'carte' : 'cartes'}</span>
+                </div>
+            `;
+            toolbar.querySelector('#selectCardsBtn').addEventListener('click', () => toggleSelectionMode());
+        } else {
+            const allSelected = selectedCards.size === folder.cards.length;
+            toolbar.innerHTML = `
+                <div class="cards-toolbar-left">
+                    <label class="select-all-label">
+                        <input type="checkbox" id="selectAllCards" ${allSelected ? 'checked' : ''}>
+                        Tout sélectionner
+                    </label>
+                    <span class="cards-count">${selectedCards.size} sélectionnée${selectedCards.size > 1 ? 's' : ''}</span>
+                </div>
+                <div class="select-actions">
+                    <button class="select-delete-btn" id="selectDeleteBtn">🗑️ Supprimer</button>
+                    <button class="select-cancel-btn" id="selectCancelBtn">Annuler</button>
+                </div>
+            `;
+            toolbar.querySelector('#selectAllCards').addEventListener('change', () => selectAllCards());
+            toolbar.querySelector('#selectDeleteBtn').addEventListener('click', () => {
+                if (!selectedCards.size) { showToast('Sélectionne des cartes'); return; }
+                const confirmed = window.confirm(`Supprimer ${selectedCards.size} carte(s) ?`);
+                if (!confirmed) return;
+                applySelectionDelete();
+            });
+            toolbar.querySelector('#selectCancelBtn').addEventListener('click', () => toggleSelectionMode());
+        }
+
+        list.appendChild(toolbar);
+
+        folder.cards.forEach(card => {
+            const cardBox = document.createElement('div');
+            cardBox.className = 'card-item' + (selectionMode && selectedCards.has(card.id) ? ' card-selected' : '');
+            cardBox.innerHTML = `
+                ${selectionMode ? `
+                    <label class="card-checkbox">
+                        <input type="checkbox" data-card-id="${card.id}" ${selectedCards.has(card.id) ? 'checked' : ''}>
+                    </label>
+                ` : ''}
+                <div class="card-item-main">
+                    <strong>${card.question}</strong>
+                    <p>${card.answer}</p>
+                </div>
+                <div class="card-item-actions">
+                    <button data-action="study">Étudier</button>
+                    <button data-action="edit">Modifier</button>
+                    <button data-action="delete">Supprimer</button>
+                </div>
+            `;
+cardBox.querySelector('[data-action="study"]').addEventListener('click', () => {
+                localStorage.setItem(STUDY_FOLDER_KEY, folder.id);
+                localStorage.setItem(STUDY_CARD_KEY, card.id);
+                window.location.href = 'study.html';
+            });
+            cardBox.querySelector('[data-action="edit"]').addEventListener('click', () => openCardModal(card.id));
+            cardBox.querySelector('[data-action="delete"]').addEventListener('click', () => deleteCard(card.id));
+            cardBox.querySelector('.card-checkbox input')?.addEventListener('change', (e) => {
+                e.stopPropagation();
+                if (e.target.checked) {
+                    selectedCards.add(card.id);
+                } else {
+                    selectedCards.delete(card.id);
+                }
+                renderCards();
+            });
+            cardBox.addEventListener('click', (e) => {
+                if (selectionMode) {
+                    if (selectedCards.has(card.id)) {
+                        selectedCards.delete(card.id);
+                    } else {
+                        selectedCards.add(card.id);
+                    }
+                    renderCards();
+                }
+            });
+            list.appendChild(cardBox);
+        });
+        updateDailyReviewWidget();
+    }
+
+    function toggleSelectionMode() {
+        selectionMode = !selectionMode;
+        selectedCards.clear();
+        renderCards();
+    }
+
+    function selectAllCards() {
+        const folder = getCurrentFolder();
+        if (!folder) return;
+        if (selectedCards.size === folder.cards.length) {
+            selectedCards.clear();
+        } else {
+            selectedCards = new Set(folder.cards.map(c => c.id));
+        }
+        renderCards();
+    }
+
+    function applySelectionDelete() {
+        const folder = getCurrentFolder();
+        if (!folder) return;
+        folder.cards = folder.cards.filter(card => !selectedCards.has(card.id));
+        saveState();
+        selectedCards.clear();
+        selectionMode = false;
+        renderCards();
+        updateStats();
+        showToast('🗑️ Cartes supprimées');
+    }
+
+    function openFolderModal() {
+        const modal = document.getElementById('folderModal');
+        if (modal) modal.classList.add('show');
+    }
+
+    function closeFolderModal() {
+        const modal = document.getElementById('folderModal');
+        if (modal) modal.classList.remove('show');
+    }
+
+    function createFolder(name) {
+        ensureState();
+        const trimmed = name.trim();
+        if (!trimmed) return;
+        state.folders.push({ id: `folder-${Date.now()}`, name: trimmed, cards: [] });
+        saveState();
+        setCurrentFolder(state.folders[state.folders.length - 1].id);
+        renderFolders();
+        renderCards();
+        showToast('📁 Dossier créé');
+    }
+
+    function openCardModal(cardId) {
+        ensureState();
+        editingCardId = cardId || null;
+        const modal = document.getElementById('cardModal');
+        const questionInput = document.getElementById('cardQuestion');
+        const answerInput = document.getElementById('cardAnswer');
+        const explanationInput = document.getElementById('cardExplanation');
+        const exampleInput = document.getElementById('cardExample');
+        const exampleTranslationInput = document.getElementById('cardExampleTranslation');
+        if (!modal || !questionInput || !answerInput) return;
+        if (editingCardId) {
+            const folder = getCurrentFolder();
+            const card = folder?.cards.find(item => item.id === editingCardId);
+            if (card) {
+                questionInput.value = card.question || '';
+                answerInput.value = card.answer || '';
+                explanationInput.value = card.explanation || '';
+                exampleInput.value = card.example || '';
+                exampleTranslationInput.value = card.exampleTranslation || '';
+            }
+        } else {
+            questionInput.value = '';
+            answerInput.value = '';
+            explanationInput.value = '';
+            exampleInput.value = '';
+            exampleTranslationInput.value = '';
+        }
+        modal.classList.add('show');
+    }
+
+    function closeCardModal() {
+        const modal = document.getElementById('cardModal');
+        if (modal) modal.classList.remove('show');
+        editingCardId = null;
+    }
+
+    function saveCard() {
+        ensureState();
+        const questionInput = document.getElementById('cardQuestion');
+        const answerInput = document.getElementById('cardAnswer');
+        const explanationInput = document.getElementById('cardExplanation');
+        const exampleInput = document.getElementById('cardExample');
+        const exampleTranslationInput = document.getElementById('cardExampleTranslation');
+        const question = questionInput?.value.trim() || '';
+        const answer = answerInput?.value.trim() || '';
+        if (!question || !answer) {
+            showToast('Remplis les deux champs');
+            return;
+        }
+        const folder = getCurrentFolder();
+        if (!folder) {
+            showToast('Créer un dossier d’abord');
+            return;
+        }
+        if (editingCardId) {
+            const card = folder.cards.find(item => item.id === editingCardId);
+            if (card) {
+                card.question = question;
+                card.answer = answer;
+                card.explanation = explanationInput?.value.trim() || '';
+                card.example = exampleInput?.value.trim() || '';
+                card.exampleTranslation = exampleTranslationInput?.value.trim() || '';
+            }
+        } else {
+            folder.cards.push({
+                id: `card-${Date.now()}`,
+                question,
+                answer,
+                explanation: explanationInput?.value.trim() || '',
+                example: exampleInput?.value.trim() || '',
+                exampleTranslation: exampleTranslationInput?.value.trim() || ''
+            });
+        }
+        saveState();
+        renderCards();
+        closeCardModal();
+        showToast(editingCardId ? '📝 Carte modifiée' : '🃏 Carte ajoutée');
+        editingCardId = null;
+    }
+
+    function deleteCard(cardId) {
+        ensureState();
+        const folder = getCurrentFolder();
+        if (!folder) return;
+        folder.cards = folder.cards.filter(card => card.id !== cardId);
+        saveState();
+        renderCards();
+        showToast('🗑️ Carte supprimée');
+    }
+
+    function updateStats() {
+        ensureState();
+        const stats = state.statistics || { reviewed: 0, learned: 0 };
+        const folderCount = state.folders.length;
+        const cardCount = state.folders.reduce((total, folder) => total + folder.cards.length, 0);
+        document.getElementById('statsFolders').textContent = folderCount;
+        document.getElementById('statsCards').textContent = cardCount;
+        document.getElementById('statsLearned').textContent = stats.learned || 0;
+        document.getElementById('statsFavorites').textContent = '0';
+        document.getElementById('statsTrash').textContent = '0';
+    }
+
+    function openStatsModal() {
+        updateStats();
+        document.getElementById('statsModal').classList.add('show');
+    }
+
+    function closeStatsModal() {
+        document.getElementById('statsModal').classList.remove('show');
+    }
+
+    function exportBackup() {
+        ensureState();
+        const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `flashmaster-backup-${new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-')}.json`;
+        link.click();
+        URL.revokeObjectURL(url);
+        showToast('💾 Sauvegarde exportée');
+    }
+
+    function normalizeImportedCard(item) {
+        if (!item || typeof item !== 'object') return null;
+        const question = item.question ?? item.front ?? item.prompt ?? item.q ?? item.Q ?? '';
+        const answer = item.answer ?? item.back ?? item.response ?? item.a ?? item.A ?? '';
+        const explanation = item.explanation ?? item.note ?? '';
+        const example = item.example ?? item.sentence ?? '';
+        const exampleTranslation = item.exampleTranslation ?? item.translation ?? '';
+        const cleanedQuestion = String(question).trim();
+        const cleanedAnswer = String(answer).trim();
+        if (!cleanedQuestion && !cleanedAnswer) return null;
+        return {
+            id: `card-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+            question: cleanedQuestion || cleanedAnswer,
+            answer: cleanedAnswer || cleanedQuestion,
+            explanation: String(explanation).trim(),
+            example: String(example).trim(),
+            exampleTranslation: String(exampleTranslation).trim()
+        };
+    }
+
+    function splitLine(line, sep) {
+        const result = [];
+        let current = '';
+        let inQuotes = false;
+        for (let i = 0; i < line.length; i++) {
+            const ch = line[i];
+            if (ch === '"') {
+                if (inQuotes && line[i + 1] === '"') { current += '"'; i++; }
+                else inQuotes = !inQuotes;
+            } else if (ch === sep && !inQuotes) {
+                result.push(current);
+                current = '';
+            } else current += ch;
+        }
+        result.push(current);
+        return result;
+    }
+
+    /* Choisit le séparateur dont les lignes sont découpées de façon
+       cohérente en un même nombre de colonnes (2+). Les virgules à
+       l'intérieur d'un champ produisent des comptes variables et ne
+       sont donc pas retenues par erreur. */
+    function robustDelimiter(lines) {
+const candidates = [';', '\t', '|', ',', '='];
+        let best = null;
+        let bestScore = -1;
+        candidates.forEach(sep => {
+            const counts = {};
+            let matches = 0;
+            lines.forEach(line => {
+                const n = splitLine(line, sep).length;
+                if (n >= 2) {
+                    counts[n] = (counts[n] || 0) + 1;
+                    matches++;
+                }
+            });
+            if (!matches) return;
+            let mode = 0, modeFreq = 0;
+            for (const n in counts) {
+                if (counts[n] > modeFreq) { modeFreq = counts[n]; mode = Number(n); }
+            }
+            // Bonus de cohérence : plus la majorité découpe en un même
+            // nombre de colonnes, meilleur est le séparateur.
+            const ratio = modeFreq / matches;
+            const score = ratio * mode;
+            if (score > bestScore) { bestScore = score; best = sep; }
+        });
+        // Si aucun séparateur fort n'est trouvé, on tente la virgule.
+        return best || (lines.some(l => splitLine(l, ',').length >= 2) ? ',' : null);
+    }
+
+    function detectDelimiter(lines) {
+        const candidates = [';', ',', '\t', '|', '/', '='];
+        let best = null;
+        let bestScore = -1;
+        candidates.forEach(sep => {
+            let score = 0;
+            lines.forEach(line => {
+                let inQuotes = false;
+                for (let i = 0; i < line.length; i++) {
+                    const ch = line[i];
+                    if (ch === '"') inQuotes = !inQuotes;
+                    else if (!inQuotes && ch === sep) score++;
+                }
+            });
+            if (score > bestScore) {
+                bestScore = score;
+                best = sep;
+            }
+        });
+        return bestScore > 0 ? best : null;
+    }
+
+    function parseImportedCards(content, fileName) {
+        const trimmed = (content || '').trim();
+        if (!trimmed) return null;
+
+        try {
+            const parsed = JSON.parse(trimmed);
+            if (Array.isArray(parsed)) {
+                return parsed.map(normalizeImportedCard).filter(Boolean);
+            }
+            if (parsed && typeof parsed === 'object') {
+                if (Array.isArray(parsed.folders)) {
+                    return { type: 'backup', data: parsed };
+                }
+                if (Array.isArray(parsed.cards)) {
+                    return parsed.cards.map(normalizeImportedCard).filter(Boolean);
+                }
+                const singleCard = normalizeImportedCard(parsed);
+                if (singleCard) {
+                    return [singleCard];
+                }
+            }
+        } catch (e) {}
+
+        const lines = trimmed.split(/\r?\n/).map(line => line.trim()).filter(Boolean);
+        if (!lines.length) return null;
+
+        const cards = [];
+        const usedDelimiters = [',', ';', '\t', '|'];
+const delimiter = robustDelimiter(lines);
+
+        lines.forEach((line, index) => {
+            if (index === 0 && /^(question|answer|front|back|prompt|response)/i.test(line)) {
+                return;
+            }
+            if (!delimiter) {
+                const dividerIndex = line.search(/[:=]/);
+                if (dividerIndex >= 0) {
+                    cards.push({
+                        question: line.slice(0, dividerIndex).trim(),
+                        answer: line.slice(dividerIndex + 1).trim()
+                    });
+                } else {
+                    cards.push({ question: line, answer: '' });
+                }
+                return;
+            }
+
+const parts = splitLine(line, delimiter).map(part => part.trim().replace(/^['"]|['"]$/g, ''));
+            if (parts.length >= 2) {
+                const question = parts[0] || '';
+                const answer = parts[1] || '';
+                let explanation = '';
+                let example = '';
+                let exampleTranslation = '';
+                if (parts.length >= 5) {
+                    // Format complet : question;réponse;explication;exemple;traduction
+                    explanation = parts[2] || '';
+                    example = parts[3] || '';
+                    exampleTranslation = parts.slice(4).join(' ');
+                } else if (parts.length === 4) {
+                    // Format sans explication : question;réponse;exemple;traduction
+                    example = parts[2] || '';
+                    exampleTranslation = parts[3] || '';
+                } else {
+                    // 2 ou 3 colonnes : question;réponse[;exemple]
+                    example = parts[2] || '';
+                }
+                if (question || answer) {
+                    cards.push({ question, answer, explanation, example, exampleTranslation });
+                }
+            }
+        });
+
+        return cards.map(normalizeImportedCard).filter(Boolean);
+    }
+
+    function importBackup(file) {
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+            try {
+                const imported = parseImportedCards(reader.result, file.name);
+                if (!imported) {
+                    showToast('Format de fichier invalide');
+                    return;
+                }
+
+                if (imported && imported.type === 'backup') {
+                    state = imported.data;
+                    saveState();
+                    currentFolderId = null;
+                    renderFolders();
+                    renderCards();
+                    applyTheme();
+                    updateStats();
+                    showToast('✅ Sauvegarde importée');
+                    return;
+                }
+
+                const cardsToAdd = Array.isArray(imported) ? imported : [imported];
+                if (!cardsToAdd.length) {
+                    showToast('Aucune carte valide trouvée');
+                    return;
+                }
+
+                ensureState();
+                const folder = getCurrentFolder();
+                if (!folder) {
+                    showToast('Créer un dossier d’abord');
+                    return;
+                }
+
+                folder.cards.push(...cardsToAdd);
+                saveState();
+                renderCards();
+                updateStats();
+                showToast(`✅ ${cardsToAdd.length} carte${cardsToAdd.length > 1 ? 's' : ''} importée${cardsToAdd.length > 1 ? 's' : ''}`);
+            } catch (e) {
+                showToast('Impossible d’importer ce fichier');
+            }
+        };
+        reader.readAsText(file);
+    }
+
+function deleteFolder(folderId) {
+        ensureState();
+        const folder = state.folders.find(f => f.id === folderId);
+        if (!folder) return;
+        const confirmed = window.confirm(`Supprimer le dossier “${folder.name}” ?`);
+        if (!confirmed) return;
+        state.folders = state.folders.filter(f => f.id !== folderId);
+        if (currentFolderId === folderId) currentFolderId = null;
+        saveState();
+        renderFolders();
+        renderCards();
+        updateStats();
+        showToast('🗑️ Dossier supprimé');
+    }
+
+    function bindEvents() {
+        document.getElementById('newFolderBtn')?.addEventListener('click', openFolderModal);
+        document.getElementById('folderCardsBtn')?.addEventListener('click', () => {
+            const folder = getCurrentFolder();
+            if (folder) renderCards();
+        });
+        document.getElementById('folderDeleteBtn')?.addEventListener('click', () => {
+            const folder = getCurrentFolder();
+            if (folder) deleteFolder(folder.id);
+        });
+        document.getElementById('saveFolder')?.addEventListener('click', () => {
+            createFolder(document.getElementById('folderName').value);
+            closeFolderModal();
+            document.getElementById('folderName').value = '';
+        });
+        document.getElementById('cancelFolder')?.addEventListener('click', closeFolderModal);
+        document.getElementById('floatingAdd')?.addEventListener('click', () => openCardModal());
+        document.getElementById('cancelCard')?.addEventListener('click', closeCardModal);
+        document.getElementById('saveCard')?.addEventListener('click', saveCard);
+        document.getElementById('themeBtn')?.addEventListener('click', () => {
+            ensureState();
+            state.settings.darkMode = !state.settings.darkMode;
+            saveState();
+            applyTheme();
+        });
+        document.getElementById('statsBtn')?.addEventListener('click', openStatsModal);
+        document.getElementById('closeStats')?.addEventListener('click', closeStatsModal);
+        document.getElementById('importCardsBtn')?.addEventListener('click', () => document.getElementById('importCardsModal').classList.add('show'));
+        document.getElementById('cancelImportCards')?.addEventListener('click', () => document.getElementById('importCardsModal').classList.remove('show'));
+        document.getElementById('chooseImportFile')?.addEventListener('click', () => document.getElementById('importCardsFile').click());
+        document.getElementById('importCardsFile')?.addEventListener('change', event => {
+            const file = event.target.files[0];
+            if (file) {
+                document.getElementById('importPreview').textContent = file.name;
+                importBackup(file);
+                document.getElementById('importCardsModal').classList.remove('show');
+            }
+        });
+        document.getElementById('confirmImportCards')?.addEventListener('click', () => {
+            const file = document.getElementById('importCardsFile').files[0];
+            if (file) {
+                importBackup(file);
+                document.getElementById('importCardsModal').classList.remove('show');
+            }
+        });
+        document.getElementById('exportBackupBtn')?.addEventListener('click', exportBackup);
+        document.getElementById('dailyResetBtn')?.addEventListener('click', event => {
+            event.stopPropagation();
+            const folder = getCurrentFolder();
+            if (!folder) return;
+
+            const state = loadState();
+            const current = state.folders.find(f => f.id === folder.id);
+            if (current) {
+                if (Array.isArray(current.cards)) {
+                    current.cards.forEach(card => {
+                        delete card.reviewDueDate;
+                    });
+                }
+                localStorage.setItem('flashmaster_daily_start', todayKey());
+                localStorage.setItem('flashmaster_daily_day', todayKey());
+                localStorage.setItem('flashmaster_daily_success', '0');
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+                updateDailyReviewWidget();
+                showToast('Révision journalière réinitialisée');
+            }
+        });
+        document.getElementById('dailyReviewBtn')?.addEventListener('click', () => {
+            const folder = getCurrentFolder();
+            if (folder) {
+                localStorage.setItem(REVIEW_FOLDER_KEY, folder.id);
+                localStorage.setItem('dailyReviewFolderId', folder.id);
+                window.location.href = 'daily.html';
+            }
+        });
+        document.getElementById('folderModal')?.addEventListener('click', event => {
+            if (event.target.id === 'folderModal') closeFolderModal();
+        });
+        document.getElementById('cardModal')?.addEventListener('click', event => {
+            if (event.target.id === 'cardModal') closeCardModal();
+        });
+        document.getElementById('statsModal')?.addEventListener('click', event => {
+            if (event.target.id === 'statsModal') closeStatsModal();
+        });
+        document.getElementById('importCardsModal')?.addEventListener('click', event => {
+            if (event.target.id === 'importCardsModal') event.target.classList.remove('show');
+        });
+    }
+
+function init() {
+        ensureState();
+        applyTheme();
+        renderFolders();
+        updateStats();
+        updateDailyReviewWidget();
+        bindEvents();
+        const folder = getCurrentFolder();
+        if (folder) {
+            localStorage.setItem(REVIEW_FOLDER_KEY, folder.id);
+            localStorage.setItem(STUDY_FOLDER_KEY, folder.id);
+        }
+        showToast('Chargé');
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+
+<script>
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+            navigator.serviceWorker.register("./sw.js").catch((err) => {
+                console.warn("Service worker non enregistré :", err);
+            });
+        });
+    }
+</script>
+
+</body>
+
+</html>
